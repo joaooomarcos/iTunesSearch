@@ -18,20 +18,33 @@
 @end
 
 @implementation TableViewController
-
-
+@synthesize btn,texto;
 
 - (void)viewDidLoad {
+    
+    _tableview.delegate = self;
+    _tableview.dataSource = self;
+    
     [super viewDidLoad];
     
     UINib *nib = [UINib nibWithNibName:@"TableViewCell" bundle:nil];
     [self.tableview registerNib:nib forCellReuseIdentifier:@"celulaPadrao"];
     
-    iTunesManager *itunes = [iTunesManager sharedInstance];
-    midias = [itunes buscarMidias:@"Apple"];
+    NSString *idioma = [[NSLocale preferredLanguages] objectAtIndex:0];
     
-#warning Necessario para que a table view tenha um espaco em relacao ao topo, pois caso contrario o texto ficara atras da barra superior
-    self.tableview.tableHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.tableview.bounds.size.width, 15.f)];
+    if ([idioma isEqualToString:@"pt"]){
+        [btn setTitle:@"Buscar" forState:UIControlStateNormal];
+        texto.text = @"Digite aqui o que deseja procurar";
+    }
+    if ([idioma isEqualToString:@"en"]){
+        [btn setTitle:@"Search" forState:UIControlStateNormal];
+        texto.text = @"Type here what you want to search";
+    }
+    if ([idioma isEqualToString:@"fr"]){
+        [btn setTitle:@"Recherche" forState:UIControlStateNormal];
+        texto.text = @"Tapez ici ce que vous voulez rechercher";
+    }
+
 }
 
 - (void)didReceiveMemoryWarning {
@@ -66,5 +79,14 @@
     return 70;
 }
 
-
+- (IBAction)buscar:(id)sender {
+    iTunesManager *itunes = [iTunesManager sharedInstance];
+    NSString *aux = [texto.text stringByReplacingOccurrencesOfString:@" " withString:@"+"];
+    
+    midias = [itunes buscarMidias:aux];
+   
+    [_tableview reloadData];
+    
+    [texto resignFirstResponder];
+}
 @end
