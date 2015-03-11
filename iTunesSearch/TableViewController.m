@@ -10,9 +10,13 @@
 #import "TableViewCell.h"
 #import "iTunesManager.h"
 #import "Entidades/Filme.h"
+#import "Entidades/Ebook.h"
+#import "Entidades/Musica.h"
+#import "Entidades/Podcast.h"
 
 @interface TableViewController () {
     NSArray *midias;
+    NSUserDefaults *ultimaBusca;
 }
 
 @end
@@ -24,27 +28,23 @@
     
     _tableview.delegate = self;
     _tableview.dataSource = self;
+    ultimaBusca = [NSUserDefaults standardUserDefaults];
     
     [super viewDidLoad];
     
     UINib *nib = [UINib nibWithNibName:@"TableViewCell" bundle:nil];
     [self.tableview registerNib:nib forCellReuseIdentifier:@"celulaPadrao"];
     
-    NSString *idioma = [[NSLocale preferredLanguages] objectAtIndex:0];
-    
-    if ([idioma isEqualToString:@"pt"]){
-        [btn setTitle:@"Buscar" forState:UIControlStateNormal];
-        texto.text = @"Digite aqui o que deseja procurar";
-    }
-    if ([idioma isEqualToString:@"en"]){
-        [btn setTitle:@"Search" forState:UIControlStateNormal];
-        texto.text = @"Type here what you want to search";
-    }
-    if ([idioma isEqualToString:@"fr"]){
-        [btn setTitle:@"Recherche" forState:UIControlStateNormal];
-        texto.text = @"Tapez ici ce que vous voulez rechercher";
-    }
-
+//    if (nil == ultimaBusca) {
+//        iTunesManager *itunes = [iTunesManager sharedInstance];
+//        midias = [itunes buscarMidias:@"Apple"];
+//    }
+//    else{
+//        iTunesManager *itunes = [iTunesManager sharedInstance];
+//        NSString *aux = [[ultimaBusca stringForKey:@"keyToLookupString"] stringByReplacingOccurrencesOfString:@" " withString:@"+"];
+//    
+//        midias = [itunes buscarMidias:aux];
+//    }
 }
 
 - (void)didReceiveMemoryWarning {
@@ -55,22 +55,64 @@
 
 #pragma mark - Metodos do UITableViewDataSource
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 1;
+    return [midias count];
 }
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return [midias count];
+    return [[midias objectAtIndex:section]count];
+}
+
+-(NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section{
+    switch (section) {
+        case 0: return @"Ebook";
+        case 1: return @"Filme";
+        case 2: return @"Musica";
+        case 3: return @"Podcast";
+    }
+    return 0;
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     TableViewCell *celula = [self.tableview dequeueReusableCellWithIdentifier:@"celulaPadrao"];
     
-    Filme *filme = [midias objectAtIndex:indexPath.row];
+    Ebook *ebook;
+    Filme *filme;
+    Musica *musica;
+    Podcast *podcast;
     
-    [celula.nome setText:filme.nome];
-    [celula.tipo setText:@"Filme"];
-    [celula.pais setText:filme.pais];
-    [celula.genero setText:filme.genero];
+    switch (indexPath.section) {
+        case 0:
+            ebook = [midias objectAtIndex:indexPath.row];
+            [celula.nome setText:ebook.nome];
+            [celula.tipo setText:@"Ebook"];
+            [celula.pais setText:ebook.pais];
+            [celula.genero setText:ebook.genero];
+            break;
+        case 1:
+            filme = [midias objectAtIndex:indexPath.row];
+            [celula.nome setText:filme.nome];
+            [celula.tipo setText:@"Filme"];
+            [celula.pais setText:filme.pais];
+            [celula.genero setText:filme.genero];
+            break;
+        case 2:
+            musica = [midias objectAtIndex:indexPath.row];
+            [celula.nome setText:musica.nome];
+            [celula.tipo setText:@"Musica"];
+            [celula.pais setText:musica.pais];
+            [celula.genero setText:musica.genero];
+            break;
+        case 3:
+            podcast = [midias objectAtIndex:indexPath.row];
+            [celula.nome setText:podcast.nome];
+            [celula.tipo setText:@"Podcast"];
+            [celula.pais setText:podcast.pais];
+            [celula.genero setText:podcast.genero];
+            break;
+            
+        default:
+            break;
+    }
     
     return celula;
 }
@@ -88,5 +130,7 @@
     [_tableview reloadData];
     
     [texto resignFirstResponder];
+    
+//    [ultimaBusca setObject:texto.text forKey:@"keyToLookupString"];
 }
 @end

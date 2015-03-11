@@ -1,0 +1,6 @@
+
+/* Class = "UITextField"; placeholder = "Digite o que deseja buscar"; ObjectID = "0ye-KZ-K8N"; */
+"0ye-KZ-K8N.placeholder" = "Tapez ici ce que vous voulez rechercher";
+
+/* Class = "UIButton"; normalTitle = "Buscar"; ObjectID = "KUb-Od-09B"; */
+"KUb-Od-09B.normalTitle" = "Recherche";
