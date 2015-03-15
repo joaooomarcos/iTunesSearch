@@ -13,6 +13,7 @@
 #import "Entidades/Ebook.h"
 #import "Entidades/Musica.h"
 #import "Entidades/Podcast.h"
+#import "DetalhesViewController.h"
 
 @interface TableViewController () {
     NSArray *midias;
@@ -22,6 +23,7 @@
 @end
 
 @implementation TableViewController
+
 @synthesize btn,texto;
 
 - (void)viewDidLoad {
@@ -35,23 +37,22 @@
     UINib *nib = [UINib nibWithNibName:@"TableViewCell" bundle:nil];
     [self.tableview registerNib:nib forCellReuseIdentifier:@"celulaPadrao"];
     
-//    if (nil == ultimaBusca) {
-//        iTunesManager *itunes = [iTunesManager sharedInstance];
-//        midias = [itunes buscarMidias:@"Apple"];
-//    }
-//    else{
-//        iTunesManager *itunes = [iTunesManager sharedInstance];
-//        NSString *aux = [[ultimaBusca stringForKey:@"keyToLookupString"] stringByReplacingOccurrencesOfString:@" " withString:@"+"];
-//    
-//        midias = [itunes buscarMidias:aux];
-//    }
+    if (nil == ultimaBusca) {
+        iTunesManager *itunes = [iTunesManager sharedInstance];
+        midias = [itunes buscarMidias:@"Apple"];
+    }
+    else{
+        iTunesManager *itunes = [iTunesManager sharedInstance];
+        NSString *aux = [[ultimaBusca stringForKey:@"keyToLookupString"] stringByReplacingOccurrencesOfString:@" " withString:@"+"];
+    
+        midias = [itunes buscarMidias:aux];
+    }
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-
 
 #pragma mark - Metodos do UITableViewDataSource
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -64,10 +65,10 @@
 
 -(NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section{
     switch (section) {
-        case 0: return @"Ebook";
-        case 1: return @"Filme";
-        case 2: return @"Musica";
-        case 3: return @"Podcast";
+        case 0: return @"eBooks";
+        case 1: return @"Filmes";
+        case 2: return @"Musicas";
+        case 3: return @"Podcasts";
     }
     return 0;
 }
@@ -82,28 +83,28 @@
     
     switch (indexPath.section) {
         case 0:
-            ebook = [midias objectAtIndex:indexPath.row];
+            ebook = [[midias objectAtIndex:indexPath.section]objectAtIndex:indexPath.row];
             [celula.nome setText:ebook.nome];
             [celula.tipo setText:@"Ebook"];
             [celula.pais setText:ebook.pais];
             [celula.genero setText:ebook.genero];
             break;
         case 1:
-            filme = [midias objectAtIndex:indexPath.row];
+            filme = [[midias objectAtIndex:indexPath.section]objectAtIndex:indexPath.row];
             [celula.nome setText:filme.nome];
             [celula.tipo setText:@"Filme"];
             [celula.pais setText:filme.pais];
             [celula.genero setText:filme.genero];
             break;
         case 2:
-            musica = [midias objectAtIndex:indexPath.row];
+            musica = [[midias objectAtIndex:indexPath.section]objectAtIndex:indexPath.row];
             [celula.nome setText:musica.nome];
             [celula.tipo setText:@"Musica"];
             [celula.pais setText:musica.pais];
             [celula.genero setText:musica.genero];
             break;
         case 3:
-            podcast = [midias objectAtIndex:indexPath.row];
+            podcast = [[midias objectAtIndex:indexPath.section]objectAtIndex:indexPath.row];
             [celula.nome setText:podcast.nome];
             [celula.tipo setText:@"Podcast"];
             [celula.pais setText:podcast.pais];
@@ -121,6 +122,16 @@
     return 70;
 }
 
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    
+    DetalhesViewController *det = [[DetalhesViewController alloc]init];
+    
+    det.row = [indexPath row];
+    det.section = [indexPath section];
+    
+    [[self navigationController] pushViewController:det animated:YES];
+}
+
 - (IBAction)buscar:(id)sender {
     iTunesManager *itunes = [iTunesManager sharedInstance];
     NSString *aux = [texto.text stringByReplacingOccurrencesOfString:@" " withString:@"+"];
@@ -131,6 +142,6 @@
     
     [texto resignFirstResponder];
     
-//    [ultimaBusca setObject:texto.text forKey:@"keyToLookupString"];
+    [ultimaBusca setObject:texto.text forKey:@"keyToLookupString"];
 }
 @end

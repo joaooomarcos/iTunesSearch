@@ -18,6 +18,8 @@ static iTunesManager *SINGLETON = nil;
 
 static bool isFirstAccess = YES;
 
+
+@synthesize results;
 #pragma mark - Public Method
 
 + (id)sharedInstance
@@ -70,7 +72,7 @@ static bool isFirstAccess = YES;
             [ebook setPais:[item objectForKey:@"country"]];
             [ebooks addObject:ebook];
         }
-        
+
         if ([kind isEqualToString:@"feature-movie"]) {
             Filme *filme = [[Filme alloc] init];
             [filme setNome:[item objectForKey:@"trackName"]];
@@ -81,7 +83,7 @@ static bool isFirstAccess = YES;
             [filme setPais:[item objectForKey:@"country"]];
             [filmes addObject:filme];
         }
-        
+
         if ([kind isEqualToString:@"song"]) {
             Musica *musica = [[Musica alloc] init];
             [musica setNome:[item objectForKey:@"trackName"]];
@@ -105,7 +107,7 @@ static bool isFirstAccess = YES;
         }
     }
     
-    NSArray *results = [[NSArray alloc]initWithObjects:ebooks, filmes, musicas, podcasts, nil];
+    results = [[NSArray alloc]initWithObjects:ebooks, filmes, musicas, podcasts, nil];
 
     return results;
 }
