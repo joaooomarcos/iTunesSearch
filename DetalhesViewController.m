@@ -20,16 +20,16 @@
 
 @implementation DetalhesViewController
 
-@synthesize row, section, nome, tipo, genero, pais;
+@synthesize row, section, name, kind, genre, country, image, artist, desc, date, trackPrice, trackId;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view from its nib.
+    
+    self.navigationItem.title = @"Detalhes";
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
 -(void) viewWillAppear:(BOOL)animated{
@@ -44,31 +44,58 @@
     switch (section) {
         case 0:
             ebook = objeto;
-            [nome setText:ebook.nome];
-            [tipo setText:@"Ebook"];
-            [pais setText:ebook.pais];
-            [genero setText:ebook.genero];
+            
+            [kind       setText:  @"eBook"];
+            [name       setText:  ebook.trackName];
+            [artist     setText:  ebook.artistName];
+            [genre      setText:  ebook.genres];
+            [desc       setText:  ebook.desc];
+            [date       setText:  ebook.releaseDate];
+            [trackId    setText:  [ebook.trackId stringValue]];
+            [trackPrice setText:  [NSString stringWithFormat:@"$%@",[ebook.price stringValue]]];
+            [image      setImage:[UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:ebook.artworkUrl100]]]];
             break;
+            
         case 1:
             filme = objeto;
-            [nome setText:filme.nome];
-            [tipo setText:@"Filme"];
-            [pais setText:filme.pais];
-            [genero setText:filme.genero];
+            
+            [kind       setText:  @"Filme"];
+            [name       setText:  filme.trackName];
+             artist.hidden = YES;
+            [genre      setText:  filme.primaryGenreName];
+            [desc       setText:  filme.shortDescription];
+            [date       setText:  filme.releaseDate];
+            [trackId    setText:  [filme.trackId stringValue]];
+            [trackPrice setText:  [NSString stringWithFormat:@"$%@",[filme.trackPrice stringValue]]];
+            [image      setImage:[UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:filme.artworkUrl100]]]];
             break;
+            
         case 2:
             musica = objeto;
-            [nome setText:musica.nome];
-            [tipo setText:@"Musica"];
-            [pais setText:musica.pais];
-            [genero setText:musica.genero];
+            
+            [kind       setText:  @"Música"];
+            [name       setText:  musica.trackName];
+            [artist     setText:  musica.artistName];
+            [genre      setText:  musica.primaryGenreName];
+             desc.hidden = YES;
+            [date       setText:  musica.releaseDate];
+            [trackId    setText:  [musica.trackId stringValue]];
+            [trackPrice setText:  [NSString stringWithFormat:@"$%@",[musica.trackPrice stringValue]]];
+            [image      setImage:[UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:musica.artworkUrl100]]]];
             break;
+            
         case 3:
             podcast = objeto;
-            [nome setText:podcast.nome];
-            [tipo setText:@"Podcast"];
-            [pais setText:podcast.pais];
-            [genero setText:podcast.genero];
+            
+            [kind       setText:  @"Podcast"];
+            [name       setText:  podcast.trackName];
+            [artist     setText:  podcast.artistName];
+            [genre      setText:  podcast.primaryGenreName];
+            [desc       setText:  podcast.description];
+            [date       setText:  podcast.releaseDate];
+            [trackId    setText: [podcast.trackId stringValue]];
+            [trackPrice setText: [NSString stringWithFormat:@"$%@",[podcast.trackPrice stringValue]]];
+            [image      setImage:[UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:podcast.artworkUrl100]]]];
             break;
             
         default:

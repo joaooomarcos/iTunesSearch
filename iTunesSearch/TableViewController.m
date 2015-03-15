@@ -17,7 +17,7 @@
 
 @interface TableViewController () {
     NSArray *midias;
-    NSUserDefaults *ultimaBusca;
+    NSUserDefaults *lastSearch;
 }
 
 @end
@@ -30,23 +30,25 @@
     
     _tableview.delegate = self;
     _tableview.dataSource = self;
-    ultimaBusca = [NSUserDefaults standardUserDefaults];
+    lastSearch = [NSUserDefaults standardUserDefaults];
     
     [super viewDidLoad];
     
     UINib *nib = [UINib nibWithNibName:@"TableViewCell" bundle:nil];
     [self.tableview registerNib:nib forCellReuseIdentifier:@"celulaPadrao"];
     
-    if (nil == ultimaBusca) {
+    if (nil == lastSearch) {
         iTunesManager *itunes = [iTunesManager sharedInstance];
         midias = [itunes buscarMidias:@"Apple"];
     }
     else{
         iTunesManager *itunes = [iTunesManager sharedInstance];
-        NSString *aux = [[ultimaBusca stringForKey:@"keyToLookupString"] stringByReplacingOccurrencesOfString:@" " withString:@"+"];
+        NSString *aux = [[lastSearch stringForKey:@"keyToLookupString"] stringByReplacingOccurrencesOfString:@" " withString:@"+"];
     
         midias = [itunes buscarMidias:aux];
     }
+    
+    self.navigationItem.title = @"Search";
 }
 
 - (void)didReceiveMemoryWarning {
@@ -74,7 +76,7 @@
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    TableViewCell *celula = [self.tableview dequeueReusableCellWithIdentifier:@"celulaPadrao"];
+    TableViewCell *cell = [self.tableview dequeueReusableCellWithIdentifier:@"celulaPadrao"];
     
     Ebook *ebook;
     Filme *filme;
@@ -84,38 +86,57 @@
     switch (indexPath.section) {
         case 0:
             ebook = [[midias objectAtIndex:indexPath.section]objectAtIndex:indexPath.row];
-            [celula.nome setText:ebook.nome];
-            [celula.tipo setText:@"Ebook"];
-            [celula.pais setText:ebook.pais];
-            [celula.genero setText:ebook.genero];
+            
+            [cell.name      setText:  ebook.trackName];
+            [cell.artist    setText:  ebook.artistName];
+            [cell.genre     setText:  ebook.genres];
+            [cell.price     setText: [NSString stringWithFormat:@"$%@",[ebook.price stringValue]]];
+            [cell.trackYear setText: [ebook.releaseDate substringToIndex:4]];
+            [cell.image     setImage:[UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:ebook.artworkUrl100]]]];
+            [cell.kindImage setImage:[UIImage imageNamed:@"ebook.png"]];
             break;
+            
         case 1:
             filme = [[midias objectAtIndex:indexPath.section]objectAtIndex:indexPath.row];
-            [celula.nome setText:filme.nome];
-            [celula.tipo setText:@"Filme"];
-            [celula.pais setText:filme.pais];
-            [celula.genero setText:filme.genero];
+
+            [cell.name      setText:  filme.trackName];
+            [cell.artist    setText:  filme.shortDescription];
+            [cell.genre     setText:  filme.primaryGenreName];
+            [cell.price     setText: [NSString stringWithFormat:@"$%@",[filme.trackPrice stringValue]]];
+            [cell.trackYear setText: [filme.releaseDate substringToIndex:4]];
+            [cell.image     setImage:[UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:filme.artworkUrl100]]]];
+            [cell.kindImage setImage:[UIImage imageNamed:@"movie.png"]];
             break;
+            
         case 2:
             musica = [[midias objectAtIndex:indexPath.section]objectAtIndex:indexPath.row];
-            [celula.nome setText:musica.nome];
-            [celula.tipo setText:@"Musica"];
-            [celula.pais setText:musica.pais];
-            [celula.genero setText:musica.genero];
+            
+            [cell.name      setText:  musica.trackName];
+            [cell.artist    setText:  musica.artistName];
+            [cell.genre     setText:  musica.primaryGenreName];
+            [cell.price     setText: [NSString stringWithFormat:@"$%@",[musica.trackPrice stringValue]]];
+            [cell.trackYear setText: [musica.releaseDate substringToIndex:4]];
+            [cell.image     setImage:[UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:musica.artworkUrl100]]]];
+            [cell.kindImage setImage:[UIImage imageNamed:@"music.png"]];
             break;
+            
         case 3:
             podcast = [[midias objectAtIndex:indexPath.section]objectAtIndex:indexPath.row];
-            [celula.nome setText:podcast.nome];
-            [celula.tipo setText:@"Podcast"];
-            [celula.pais setText:podcast.pais];
-            [celula.genero setText:podcast.genero];
+            
+            [cell.name      setText:  podcast.trackName];
+            [cell.artist    setText:  podcast.artistName];
+            [cell.genre     setText:  podcast.primaryGenreName];
+            [cell.price     setText: [NSString stringWithFormat:@"$%@",[podcast.trackPrice stringValue]]];
+            [cell.trackYear setText: [podcast.releaseDate substringToIndex:4]];
+            [cell.image     setImage:[UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:podcast.artworkUrl100]]]];
+            [cell.kindImage setImage:[UIImage imageNamed:@"podcast.png"]];
             break;
             
         default:
             break;
     }
     
-    return celula;
+    return cell;
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -142,6 +163,6 @@
     
     [texto resignFirstResponder];
     
-    [ultimaBusca setObject:texto.text forKey:@"keyToLookupString"];
+    [lastSearch setObject:texto.text forKey:@"keyToLookupString"];
 }
 @end

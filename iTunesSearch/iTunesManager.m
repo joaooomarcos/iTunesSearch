@@ -53,62 +53,91 @@ static bool isFirstAccess = YES;
     
     NSArray *resultados = [resultado objectForKey:@"results"];
     
-    NSMutableArray *filmes = [[NSMutableArray alloc] init];
-    NSMutableArray *musicas = [[NSMutableArray alloc] init];
-    NSMutableArray *podcasts = [[NSMutableArray alloc] init];
-    NSMutableArray *ebooks = [[NSMutableArray alloc] init];
+    NSMutableArray *filmes =    [[NSMutableArray alloc] init];
+    NSMutableArray *musicas =   [[NSMutableArray alloc] init];
+    NSMutableArray *podcasts =  [[NSMutableArray alloc] init];
+    NSMutableArray *ebooks =    [[NSMutableArray alloc] init];
     
     NSString *kind;
     
     for(NSDictionary *item in resultados) {
+        
         kind = [item objectForKey:@"kind"];
         
         if ([kind isEqualToString:@"ebook"]) {
+            
             Ebook *ebook = [[Ebook alloc] init];
-            [ebook setNome:[item objectForKey:@"trackName"]];
-            [ebook setTrackId:[item objectForKey:@"trackId"]];
-            [ebook setAutor:[item objectForKey:@"artistName"]];
-            [ebook setGenero:[item objectForKey:@"primaryGenreName"]];
-            [ebook setPais:[item objectForKey:@"country"]];
+            
+            [ebook setArtistName:   [item objectForKey:@"artistName"]];
+            [ebook setArtworkUrl100:[item objectForKey:@"artworkUrl100"]];
+            [ebook setCountry:      [item objectForKey:@"country"]];
+            [ebook setDesc   :      [item objectForKey:@"description"]];
+            [ebook setGenres:       [item objectForKey:@"genres"]];
+            [ebook setKind:         [item objectForKey:@"kind"]];
+            [ebook setPrice:        [item objectForKey:@"price"]];
+            [ebook setReleaseDate:  [item objectForKey:@"releaseDate"]];
+            [ebook setTrackId:      [item objectForKey:@"trackId"]];
+            [ebook setTrackName:    [item objectForKey:@"trackName"]];
+            
             [ebooks addObject:ebook];
         }
-
+        
         if ([kind isEqualToString:@"feature-movie"]) {
+            
             Filme *filme = [[Filme alloc] init];
-            [filme setNome:[item objectForKey:@"trackName"]];
-            [filme setTrackId:[item objectForKey:@"trackId"]];
-            [filme setArtista:[item objectForKey:@"artistName"]];
-            [filme setDuracao:[item objectForKey:@"trackTimeMillis"]];
-            [filme setGenero:[item objectForKey:@"primaryGenreName"]];
-            [filme setPais:[item objectForKey:@"country"]];
+            
+            [filme setArtworkUrl100:    [item objectForKey:@"artworkUrl100"]];
+            [filme setCountry:          [item objectForKey:@"country"]];
+            [filme setKind:             [item objectForKey:@"kind"]];
+            [filme setPrimaryGenreName: [item objectForKey:@"primaryGenreName"]];
+            [filme setReleaseDate:      [item objectForKey:@"releaseDate"]];
+            [filme setShortDescription: [item objectForKey:@"shortDescription"]];
+            [filme setTrackName:        [item objectForKey:@"trackName"]];
+            [filme setTrackId:          [item objectForKey:@"trackId"]];
+            [filme setTrackPrice:       [item objectForKey:@"trackPrice"]];
+            
             [filmes addObject:filme];
         }
-
+        
         if ([kind isEqualToString:@"song"]) {
+            
             Musica *musica = [[Musica alloc] init];
-            [musica setNome:[item objectForKey:@"trackName"]];
-            [musica setTrackId:[item objectForKey:@"trackId"]];
-            [musica setArtista:[item objectForKey:@"artistName"]];
-            [musica setDuracao:[item objectForKey:@"trackTimeMillis"]];
-            [musica setPais:[item objectForKey:@"country"]];
-            [musica setGenero:[item objectForKey:@"genre"]];
+            
+            [musica setArtistName:      [item objectForKey:@"artistName"]];
+            [musica setArtworkUrl100:   [item objectForKey:@"artworkUrl100"]];
+            [musica setCollectionName:  [item objectForKey:@"collectionName"]];
+            [musica setCollectionPrice: [item objectForKey:@"collectionPrice"]];
+            [musica setCountry:         [item objectForKey:@"country"]];
+            [musica setKind:            [item objectForKey:@"kind"]];
+            [musica setPrimaryGenreName:[item objectForKey:@"primaryGenreName"]];
+            [musica setReleaseDate:     [item objectForKey:@"releaseDate"]];
+            [musica setTrackId:         [item objectForKey:@"trackId"]];
+            [musica setTrackName:       [item objectForKey:@"trackName"]];
+            [musica setTrackPrice:      [item objectForKey:@"trackPrice"]];
+            
             [musicas addObject:musica];
         }
         
         if ([kind isEqualToString:@"podcast"]) {
             Podcast *podcast = [[Podcast alloc] init];
-            [podcast setNome:[item objectForKey:@"trackName"]];
-            [podcast setTrackId:[item objectForKey:@"trackId"]];
-            [podcast setArtista:[item objectForKey:@"artistName"]];
-            [podcast setDuracao:[item objectForKey:@"trackTimeMillis"]];
-            [podcast setGenero:[item objectForKey:@"primaryGenreName"]];
-            [podcast setPais:[item objectForKey:@"country"]];
+            
+            [podcast setArtistName:      [item objectForKey:@"artistName"]];
+            [podcast setArtworkUrl100:   [item objectForKey:@"artworkUrl100"]];
+            [podcast setCollectionName:  [item objectForKey:@"collectionName"]];
+            [podcast setCountry:         [item objectForKey:@"country"]];
+            [podcast setKind:            [item objectForKey:@"kind"]];
+            [podcast setPrimaryGenreName:[item objectForKey:@"primaryGenreName"]];
+            [podcast setReleaseDate:     [item objectForKey:@"releaseDate"]];
+            [podcast setTrackId:         [item objectForKey:@"trackId"]];
+            [podcast setTrackName:       [item objectForKey:@"trackName"]];
+            [podcast setTrackPrice:      [item objectForKey:@"trackPrice"]];
+            
             [podcasts addObject:podcast];
         }
     }
     
     results = [[NSArray alloc]initWithObjects:ebooks, filmes, musicas, podcasts, nil];
-
+    
     return results;
 }
 

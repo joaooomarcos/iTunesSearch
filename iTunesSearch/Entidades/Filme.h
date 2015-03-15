@@ -10,11 +10,14 @@
 
 @interface Filme : NSObject
 
-@property (nonatomic, strong) NSString *nome;
-@property (nonatomic, strong) NSString *trackId;
-@property (nonatomic, strong) NSString *artista;
-@property (nonatomic, strong) NSString *duracao;
-@property (nonatomic, strong) NSString *genero;
-@property (nonatomic, strong) NSString *pais;
+@property (nonatomic, strong) NSString *artworkUrl100;      // URL da imagem da capa
+@property (nonatomic, strong) NSString *country;            // País
+@property (nonatomic, strong) NSString *kind;               // Tipo
+@property (nonatomic, strong) NSString *primaryGenreName;   // Gênero
+@property (nonatomic, strong) NSString *releaseDate;        // Data de Lançamento
+@property (nonatomic, strong) NSString *shortDescription;   // Descrição
+@property (nonatomic, strong) NSString *trackName;          // Nome
+@property (nonatomic, strong) NSNumber *trackId;            // Id
+@property (nonatomic, strong) NSNumber *trackPrice;         // Preço
 
 @end

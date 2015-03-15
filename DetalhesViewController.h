@@ -10,11 +10,17 @@
 
 @interface DetalhesViewController : UIViewController
 
-@property (weak, nonatomic) IBOutlet UILabel *tipo;
-@property (weak, nonatomic) IBOutlet UIImageView *imagem;
-@property (weak, nonatomic) IBOutlet UILabel *nome;
-@property (weak, nonatomic) IBOutlet UILabel *genero;
-@property (weak, nonatomic) IBOutlet UILabel *pais;
+@property (weak, nonatomic) IBOutlet UILabel *kind;
+@property (weak, nonatomic) IBOutlet UILabel *name;
+@property (weak, nonatomic) IBOutlet UILabel *genre;
+@property (weak, nonatomic) IBOutlet UILabel *country;
+@property (weak, nonatomic) IBOutlet UIImageView *image;
+@property (weak, nonatomic) IBOutlet UILabel *artist;
+@property (weak, nonatomic) IBOutlet UILabel *desc;
+@property (weak, nonatomic) IBOutlet UILabel *date;
+@property (weak, nonatomic) IBOutlet UILabel *trackId;
+@property (weak, nonatomic) IBOutlet UILabel *trackPrice;
+
 @property NSInteger row;
 @property NSInteger section;
 
